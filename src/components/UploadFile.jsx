@@ -137,81 +137,110 @@ const UploadFile = ({ userId, onUploadComplete }) => {
 
       <style>{`
         .upload-file {
-          background: #f8f9fa;
-          padding: 20px;
-          border-radius: 8px;
+          background: #fff;
+          padding: 24px;
+          border-radius: 12px;
           margin-bottom: 20px;
+          border: 1px solid #e4e4e7;
         }
 
         .upload-file h3 {
-          margin-top: 0;
-          color: #333;
+          margin: 0 0 16px 0;
+          color: #18181b;
+          font-size: 1rem;
+          font-weight: 600;
         }
 
         .upload-area {
-          margin-bottom: 15px;
+          margin-bottom: 16px;
         }
 
         .file-input {
           width: 100%;
-          padding: 10px;
-          border: 2px dashed #ccc;
-          border-radius: 4px;
+          padding: 20px;
+          border: 1px dashed #d4d4d8;
+          border-radius: 8px;
           cursor: pointer;
+          background: #fafafa;
+          transition: all 0.15s ease;
+          font-size: 14px;
+          color: #52525b;
         }
 
         .file-input:hover {
-          border-color: #007bff;
+          border-color: #a1a1aa;
+          background: #f4f4f5;
+        }
+
+        .file-input:focus {
+          outline: none;
+          border-color: #18181b;
         }
 
         .selected-file-info {
-          margin-top: 10px;
-          padding: 10px;
-          background: #e9ecef;
-          border-radius: 4px;
+          margin-top: 12px;
+          padding: 14px;
+          background: #f4f4f5;
+          border-radius: 8px;
         }
 
         .selected-file-info p {
-          margin: 5px 0;
-          font-size: 14px;
+          margin: 4px 0;
+          font-size: 13px;
+          color: #52525b;
+        }
+
+        .selected-file-info strong {
+          color: #18181b;
         }
 
         .upload-button {
           width: 100%;
-          padding: 12px 20px;
-          background: #007bff;
-          color: white;
+          padding: 14px 20px;
+          background: #18181b;
+          color: #fff;
           border: none;
-          border-radius: 4px;
-          font-size: 16px;
+          border-radius: 8px;
+          font-size: 14px;
+          font-weight: 500;
           cursor: pointer;
-          transition: background 0.2s;
+          transition: all 0.15s ease;
         }
 
         .upload-button:hover:not(:disabled) {
-          background: #0056b3;
+          background: #27272a;
         }
 
         .upload-button:disabled {
-          background: #ccc;
+          background: #d4d4d8;
           cursor: not-allowed;
         }
 
         .upload-progress {
-          margin-top: 10px;
-          padding: 10px;
-          background: #d4edda;
-          color: #155724;
-          border-radius: 4px;
+          margin-top: 12px;
+          padding: 12px 14px;
+          background: #f0fdf4;
+          color: #166534;
+          border-radius: 8px;
           text-align: center;
+          font-size: 14px;
+        }
+
+        .upload-progress p {
+          margin: 0;
         }
 
         .error-message {
-          margin-top: 10px;
-          padding: 10px;
-          background: #f8d7da;
-          color: #721c24;
-          border-radius: 4px;
+          margin-top: 12px;
+          padding: 12px 14px;
+          background: #fef2f2;
+          color: #dc2626;
+          border-radius: 8px;
+          font-size: 14px;
+        }
+
+        .error-message p {
+          margin: 0;
         }
       `}</style>
     </div>

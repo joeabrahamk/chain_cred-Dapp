@@ -68,44 +68,53 @@ const DeleteFile = ({ userId, fileIndex, fileName, onDeleteComplete }) => {
             align-items: center;
             gap: 8px;
             flex-wrap: wrap;
+            padding: 8px 12px;
+            background: #fafafa;
+            border-radius: 8px;
+            border: 1px solid #e4e4e7;
           }
 
           .confirm-text {
-            font-size: 13px;
-            color: #dc3545;
+            font-size: 12px;
+            color: #52525b;
+            font-weight: 500;
           }
 
           .confirm-yes {
-            padding: 4px 8px;
-            background: #dc3545;
-            color: white;
+            padding: 5px 10px;
+            background: #dc2626;
+            color: #fff;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
+            font-weight: 500;
+            transition: all 0.15s ease;
           }
 
           .confirm-yes:hover:not(:disabled) {
-            background: #c82333;
+            background: #b91c1c;
           }
 
           .confirm-no {
-            padding: 4px 8px;
-            background: #6c757d;
-            color: white;
-            border: none;
-            border-radius: 4px;
+            padding: 5px 10px;
+            background: #fff;
+            color: #52525b;
+            border: 1px solid #e4e4e7;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
+            font-weight: 500;
+            transition: all 0.15s ease;
           }
 
           .confirm-no:hover:not(:disabled) {
-            background: #5a6268;
+            background: #f4f4f5;
           }
 
           .delete-error {
-            font-size: 12px;
-            color: #dc3545;
+            font-size: 11px;
+            color: #dc2626;
           }
         `}</style>
       </span>
@@ -119,23 +128,30 @@ const DeleteFile = ({ userId, fileIndex, fileName, onDeleteComplete }) => {
         className="delete-button"
         title={`Delete ${fileName}`}
       >
-        🗑️ Delete
+        Delete
       </button>
 
       <style>{`
         .delete-button {
           padding: 6px 12px;
-          background: #dc3545;
-          color: white;
-          border: none;
-          border-radius: 4px;
+          background: #fff;
+          color: #71717a;
+          border: 1px solid #e4e4e7;
+          border-radius: 6px;
           cursor: pointer;
-          font-size: 13px;
-          transition: background 0.2s;
+          font-size: 12px;
+          font-weight: 500;
+          transition: all 0.15s ease;
         }
 
         .delete-button:hover {
-          background: #c82333;
+          background: #fef2f2;
+          border-color: #fecaca;
+          color: #dc2626;
+        }
+
+        .delete-button:active {
+          background: #fee2e2;
         }
       `}</style>
     </>

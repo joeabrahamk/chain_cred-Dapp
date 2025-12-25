@@ -36,27 +36,32 @@ const DownloadFile = ({ cid, fileName }) => {
         className="download-button"
         title={error || `Download ${fileName}`}
       >
-        {downloading ? '...' : '⬇️ Download'}
+        {downloading ? '...' : 'Download'}
       </button>
 
       <style>{`
         .download-button {
           padding: 6px 12px;
-          background: #28a745;
-          color: white;
+          background: #18181b;
+          color: #fff;
           border: none;
-          border-radius: 4px;
+          border-radius: 6px;
           cursor: pointer;
-          font-size: 13px;
-          transition: background 0.2s;
+          font-size: 12px;
+          font-weight: 500;
+          transition: all 0.15s ease;
         }
 
         .download-button:hover:not(:disabled) {
-          background: #218838;
+          background: #27272a;
+        }
+
+        .download-button:active:not(:disabled) {
+          background: #18181b;
         }
 
         .download-button:disabled {
-          background: #ccc;
+          background: #d4d4d8;
           cursor: wait;
         }
       `}</style>

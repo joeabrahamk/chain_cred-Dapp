@@ -185,44 +185,67 @@ const UserDashboard = () => {
       <style>{`
         .dashboard {
           min-height: 100vh;
-          background: #f0f2f5;
+          background: #fafafa;
         }
 
         .dashboard.loading {
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 18px;
-          color: #666;
+          font-size: 15px;
+          color: #71717a;
+          gap: 12px;
+        }
+
+        .dashboard.loading::after {
+          content: '';
+          width: 20px;
+          height: 20px;
+          border: 2px solid #e4e4e7;
+          border-top-color: #18181b;
+          border-radius: 50%;
+          animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+          to { transform: rotate(360deg); }
         }
 
         .dashboard-header {
-          background: #667eea;
-          color: white;
-          padding: 15px 30px;
+          background: #fff;
+          border-bottom: 1px solid #e4e4e7;
+          padding: 16px 32px;
           display: flex;
           justify-content: space-between;
           align-items: center;
           flex-wrap: wrap;
-          gap: 15px;
+          gap: 16px;
+          position: sticky;
+          top: 0;
+          z-index: 100;
         }
 
         .header-left {
           display: flex;
           align-items: center;
-          gap: 15px;
+          gap: 16px;
         }
 
         .header-left h1 {
           margin: 0;
-          font-size: 1.5rem;
+          font-size: 1.25rem;
+          font-weight: 700;
+          color: #18181b;
+          letter-spacing: -0.5px;
         }
 
         .user-type {
-          background: rgba(255,255,255,0.2);
-          padding: 4px 12px;
-          border-radius: 20px;
+          background: #f4f4f5;
+          padding: 6px 12px;
+          border-radius: 6px;
           font-size: 12px;
+          font-weight: 500;
+          color: #52525b;
         }
 
         .header-right {
@@ -237,68 +260,85 @@ const UserDashboard = () => {
           display: flex;
           align-items: center;
           gap: 8px;
-          font-size: 14px;
+          font-size: 13px;
         }
 
         .wallet-label,
         .user-id-label {
-          opacity: 0.8;
+          color: #71717a;
         }
 
         .wallet-address {
-          font-family: monospace;
-          background: rgba(255,255,255,0.2);
-          padding: 4px 8px;
-          border-radius: 4px;
+          font-family: 'SF Mono', 'Monaco', monospace;
+          background: #f4f4f5;
+          padding: 6px 10px;
+          border-radius: 6px;
+          font-size: 12px;
+          color: #18181b;
         }
 
         .user-id {
-          background: rgba(255,255,255,0.2);
-          padding: 4px 8px;
-          border-radius: 4px;
+          background: #f4f4f5;
+          padding: 6px 10px;
+          border-radius: 6px;
+          font-weight: 500;
+          color: #18181b;
+          font-size: 13px;
         }
 
         .logout-button {
           padding: 8px 16px;
-          background: rgba(255,255,255,0.2);
-          color: white;
-          border: 1px solid rgba(255,255,255,0.3);
-          border-radius: 4px;
+          background: #fff;
+          color: #52525b;
+          border: 1px solid #e4e4e7;
+          border-radius: 8px;
           cursor: pointer;
-          font-size: 14px;
-          transition: all 0.2s;
+          font-size: 13px;
+          font-weight: 500;
+          transition: all 0.15s ease;
         }
 
         .logout-button:hover {
-          background: rgba(255,255,255,0.3);
+          background: #fafafa;
+          border-color: #d4d4d8;
+          color: #18181b;
         }
 
         .dashboard-content {
-          max-width: 900px;
-          margin: 30px auto;
-          padding: 0 20px;
+          max-width: 800px;
+          margin: 40px auto;
+          padding: 0 24px;
+          animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
 
         .register-section {
-          background: white;
-          padding: 40px;
+          background: #fff;
+          padding: 48px 40px;
           border-radius: 12px;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          border: 1px solid #e4e4e7;
           text-align: center;
         }
 
         .register-section h2 {
-          margin-top: 0;
-          color: #333;
+          margin: 0 0 8px 0;
+          color: #18181b;
+          font-size: 1.5rem;
+          font-weight: 600;
         }
 
         .register-section p {
-          color: #666;
-          margin-bottom: 30px;
+          color: #71717a;
+          margin-bottom: 32px;
+          font-size: 15px;
         }
 
         .register-form {
-          max-width: 400px;
+          max-width: 360px;
           margin: 0 auto;
           text-align: left;
         }
@@ -310,60 +350,102 @@ const UserDashboard = () => {
         .form-group label {
           display: block;
           margin-bottom: 8px;
-          color: #333;
+          color: #3f3f46;
           font-weight: 500;
+          font-size: 14px;
         }
 
         .form-group input {
           width: 100%;
-          padding: 12px;
-          border: 1px solid #ddd;
-          border-radius: 6px;
-          font-size: 14px;
+          padding: 12px 14px;
+          border: 1px solid #e4e4e7;
+          border-radius: 8px;
+          font-size: 15px;
           box-sizing: border-box;
+          transition: all 0.15s ease;
+          background: #fff;
+        }
+
+        .form-group input:hover {
+          border-color: #d4d4d8;
         }
 
         .form-group input:focus {
           outline: none;
-          border-color: #667eea;
+          border-color: #18181b;
+          box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
         }
 
         .form-group small {
           display: block;
-          margin-top: 5px;
-          color: #999;
+          margin-top: 6px;
+          color: #a1a1aa;
           font-size: 12px;
         }
 
         .register-button {
           width: 100%;
           padding: 14px 20px;
-          background: #667eea;
-          color: white;
+          background: #18181b;
+          color: #fff;
           border: none;
           border-radius: 8px;
-          font-size: 16px;
-          font-weight: 600;
+          font-size: 15px;
+          font-weight: 500;
           cursor: pointer;
-          transition: background 0.2s;
+          transition: all 0.15s ease;
         }
 
         .register-button:hover:not(:disabled) {
-          background: #5a6fd6;
+          background: #27272a;
         }
 
         .register-button:disabled {
-          background: #ccc;
+          background: #d4d4d8;
           cursor: not-allowed;
         }
 
         .error-message {
           margin-top: 20px;
-          padding: 12px;
-          background: #f8d7da;
-          color: #721c24;
-          border-radius: 6px;
+          padding: 12px 14px;
+          background: #fef2f2;
+          color: #dc2626;
+          border-radius: 8px;
           text-align: left;
+          font-size: 14px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .error-message::before {
+          content: '!';
+          width: 18px;
+          height: 18px;
+          background: #dc2626;
+          color: #fff;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 11px;
+          font-weight: 700;
+          flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+          .dashboard-header {
+            padding: 12px 16px;
+          }
+
+          .dashboard-content {
+            margin: 24px auto;
+            padding: 0 16px;
+          }
+
+          .register-section {
+            padding: 32px 24px;
+          }
         }
       `}</style>
     </div>

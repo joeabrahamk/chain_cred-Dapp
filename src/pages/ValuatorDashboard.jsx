@@ -178,115 +178,147 @@ const ValuatorDashboard = () => {
       <style>{`
         .dashboard {
           min-height: 100vh;
-          background: #f0f2f5;
+          background: #fafafa;
         }
 
         .dashboard.loading {
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 18px;
-          color: #666;
+          font-size: 15px;
+          color: #71717a;
+          gap: 12px;
+        }
+
+        .dashboard.loading::after {
+          content: '';
+          width: 20px;
+          height: 20px;
+          border: 2px solid #e4e4e7;
+          border-top-color: #18181b;
+          border-radius: 50%;
+          animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+          to { transform: rotate(360deg); }
         }
 
         .dashboard-header {
-          background: #2c3e50;
-          color: white;
-          padding: 15px 30px;
+          background: #18181b;
+          color: #fff;
+          padding: 16px 32px;
           display: flex;
           justify-content: space-between;
           align-items: center;
           flex-wrap: wrap;
-          gap: 15px;
+          gap: 16px;
+          position: sticky;
+          top: 0;
+          z-index: 100;
         }
 
         .header-left {
           display: flex;
           align-items: center;
-          gap: 15px;
+          gap: 16px;
         }
 
         .header-left h1 {
           margin: 0;
-          font-size: 1.5rem;
+          font-size: 1.25rem;
+          font-weight: 700;
+          letter-spacing: -0.5px;
         }
 
         .user-type {
-          background: rgba(255,255,255,0.2);
-          padding: 4px 12px;
-          border-radius: 20px;
+          background: rgba(255, 255, 255, 0.1);
+          padding: 6px 12px;
+          border-radius: 6px;
           font-size: 12px;
+          font-weight: 500;
         }
 
         .valuator-badge {
-          background: #e74c3c;
+          background: #3b82f6;
         }
 
         .header-right {
           display: flex;
           align-items: center;
-          gap: 20px;
+          gap: 16px;
         }
 
         .user-info {
           display: flex;
           align-items: center;
           gap: 8px;
-          font-size: 14px;
+          font-size: 13px;
         }
 
         .user-label {
-          opacity: 0.8;
+          opacity: 0.7;
         }
 
         .username {
-          background: rgba(255,255,255,0.2);
-          padding: 4px 8px;
-          border-radius: 4px;
+          background: rgba(255, 255, 255, 0.1);
+          padding: 6px 10px;
+          border-radius: 6px;
+          font-weight: 500;
         }
 
         .logout-button {
           padding: 8px 16px;
-          background: rgba(255,255,255,0.2);
-          color: white;
-          border: 1px solid rgba(255,255,255,0.3);
-          border-radius: 4px;
+          background: transparent;
+          color: #fff;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 8px;
           cursor: pointer;
-          font-size: 14px;
-          transition: all 0.2s;
+          font-size: 13px;
+          font-weight: 500;
+          transition: all 0.15s ease;
         }
 
         .logout-button:hover {
-          background: rgba(255,255,255,0.3);
+          background: rgba(255, 255, 255, 0.1);
+          border-color: rgba(255, 255, 255, 0.3);
         }
 
         .dashboard-content {
-          max-width: 900px;
-          margin: 30px auto;
-          padding: 0 20px;
+          max-width: 800px;
+          margin: 40px auto;
+          padding: 0 24px;
+          animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
 
         .search-section {
-          background: white;
-          padding: 25px;
+          background: #fff;
+          padding: 28px;
           border-radius: 12px;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-          margin-bottom: 20px;
+          margin-bottom: 24px;
+          border: 1px solid #e4e4e7;
         }
 
         .search-section h2 {
-          margin: 0 0 5px 0;
-          color: #333;
+          margin: 0 0 4px 0;
+          color: #18181b;
+          font-size: 1.25rem;
+          font-weight: 600;
         }
 
         .search-section p {
-          color: #666;
+          color: #71717a;
           margin: 0 0 20px 0;
           font-size: 14px;
         }
 
         .search-form {
-          margin-bottom: 15px;
+          margin-bottom: 0;
         }
 
         .search-input-group {
@@ -298,105 +330,164 @@ const ValuatorDashboard = () => {
         .search-input {
           flex: 1;
           min-width: 200px;
-          padding: 12px 15px;
-          border: 1px solid #ddd;
-          border-radius: 6px;
-          font-size: 14px;
+          padding: 12px 14px;
+          border: 1px solid #e4e4e7;
+          border-radius: 8px;
+          font-size: 15px;
+          transition: all 0.15s ease;
+          background: #fff;
+        }
+
+        .search-input:hover {
+          border-color: #d4d4d8;
         }
 
         .search-input:focus {
           outline: none;
-          border-color: #2c3e50;
+          border-color: #18181b;
+          box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
         }
 
         .search-button {
-          padding: 12px 24px;
-          background: #2c3e50;
-          color: white;
+          padding: 12px 20px;
+          background: #18181b;
+          color: #fff;
           border: none;
-          border-radius: 6px;
+          border-radius: 8px;
           font-size: 14px;
+          font-weight: 500;
           cursor: pointer;
-          transition: background 0.2s;
+          transition: all 0.15s ease;
           white-space: nowrap;
         }
 
         .search-button:hover:not(:disabled) {
-          background: #34495e;
+          background: #27272a;
         }
 
         .search-button:disabled {
-          background: #ccc;
+          background: #d4d4d8;
           cursor: not-allowed;
         }
 
         .clear-button {
-          padding: 12px 20px;
-          background: #6c757d;
-          color: white;
-          border: none;
-          border-radius: 6px;
+          padding: 12px 16px;
+          background: #fff;
+          color: #52525b;
+          border: 1px solid #e4e4e7;
+          border-radius: 8px;
           font-size: 14px;
+          font-weight: 500;
           cursor: pointer;
-          transition: background 0.2s;
+          transition: all 0.15s ease;
         }
 
         .clear-button:hover {
-          background: #5a6268;
+          background: #fafafa;
+          border-color: #d4d4d8;
         }
 
         .error-message {
-          margin-top: 15px;
-          padding: 12px;
-          background: #f8d7da;
-          color: #721c24;
-          border-radius: 6px;
+          margin-top: 16px;
+          padding: 12px 14px;
+          background: #fef2f2;
+          color: #dc2626;
+          border-radius: 8px;
+          font-size: 14px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .error-message::before {
+          content: '!';
+          width: 18px;
+          height: 18px;
+          background: #dc2626;
+          color: #fff;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 11px;
+          font-weight: 700;
+          flex-shrink: 0;
         }
 
         .search-result-info {
-          margin-top: 15px;
-          padding: 12px;
-          background: #d4edda;
-          color: #155724;
-          border-radius: 6px;
+          margin-top: 16px;
+          padding: 12px 14px;
+          background: #f0fdf4;
+          color: #166534;
+          border-radius: 8px;
+          font-size: 14px;
         }
 
         .empty-state {
-          background: white;
-          padding: 60px 20px;
+          background: #fff;
+          padding: 64px 24px;
           border-radius: 12px;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
           text-align: center;
-          margin-bottom: 20px;
+          margin-bottom: 24px;
+          border: 1px solid #e4e4e7;
         }
 
         .empty-icon {
-          font-size: 60px;
-          margin-bottom: 15px;
+          font-size: 48px;
+          margin-bottom: 16px;
+          opacity: 0.4;
         }
 
         .empty-state h3 {
-          margin: 0 0 10px 0;
-          color: #333;
+          margin: 0 0 8px 0;
+          color: #18181b;
+          font-size: 1.1rem;
+          font-weight: 600;
         }
 
         .empty-state p {
           margin: 0;
-          color: #666;
+          color: #71717a;
+          font-size: 14px;
         }
 
         .valuator-notice {
-          background: #fff3cd;
-          padding: 15px 20px;
+          background: #fefce8;
+          padding: 14px 16px;
           border-radius: 8px;
-          border-left: 4px solid #ffc107;
-          margin-top: 20px;
+          border: 1px solid #fef08a;
+          margin-top: 24px;
         }
 
         .valuator-notice p {
           margin: 0;
-          color: #856404;
-          font-size: 14px;
+          color: #854d0e;
+          font-size: 13px;
+          line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+          .dashboard-header {
+            padding: 12px 16px;
+          }
+
+          .dashboard-content {
+            margin: 24px auto;
+            padding: 0 16px;
+          }
+
+          .search-section {
+            padding: 20px;
+          }
+
+          .search-input-group {
+            flex-direction: column;
+          }
+
+          .search-button,
+          .clear-button {
+            width: 100%;
+          }
         }
       `}</style>
     </div>

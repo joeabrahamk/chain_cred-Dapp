@@ -7,7 +7,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginWithWallet, checkAuthStatus, formatAddress } from '../auth/walletAuth';
+import { loginWithWallet, checkAuthStatus, formatAddress, wasLoggedOut } from '../auth/walletAuth';
 import { loginAsValuator, checkValuatorAuthStatus } from '../auth/valuatorAuth';
 import { isMetaMaskInstalled } from '../blockchain/web3';
 
@@ -34,6 +34,11 @@ const Login = () => {
       const valuatorAuth = checkValuatorAuthStatus();
       if (valuatorAuth.isAuthenticated) {
         navigate('/valuator');
+        return;
+      }
+
+      // Don't auto-reconnect if user explicitly logged out
+      if (wasLoggedOut()) {
         return;
       }
 
@@ -199,8 +204,7 @@ const Login = () => {
             )}
 
             <div className="info-box">
-              <h4>Note</h4>
-              <p>Valuators have read-only access. You can view files but cannot upload or delete.</p>
+              <p>Valuators have read-only access to view files.</p>
             </div>
           </div>
         )}
@@ -212,104 +216,162 @@ const Login = () => {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          padding: 20px;
+          background: #fafafa;
+          padding: 24px;
+          position: relative;
+        }
+
+        .login-page::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 50%;
+          background: #000;
+          z-index: 0;
         }
 
         .login-container {
-          background: white;
-          padding: 40px;
-          border-radius: 12px;
-          box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-          max-width: 450px;
+          background: #fff;
+          padding: 48px 40px;
+          border-radius: 16px;
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+          max-width: 420px;
           width: 100%;
+          position: relative;
+          z-index: 10;
+          animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+          from { opacity: 0; transform: translateY(24px); }
+          to { opacity: 1; transform: translateY(0); }
         }
 
         h1 {
           text-align: center;
-          margin: 0 0 5px 0;
-          color: #333;
-          font-size: 2.5rem;
+          margin: 0 0 4px 0;
+          font-size: 1.75rem;
+          font-weight: 700;
+          color: #000;
+          letter-spacing: -0.5px;
         }
 
         .subtitle {
           text-align: center;
-          color: #666;
-          margin: 0 0 30px 0;
+          color: #71717a;
+          margin: 0 0 32px 0;
+          font-size: 14px;
+          font-weight: 400;
         }
 
         .tabs {
           display: flex;
-          margin-bottom: 30px;
-          border-bottom: 2px solid #eee;
+          margin-bottom: 32px;
+          border-bottom: 1px solid #e4e4e7;
         }
 
         .tab {
           flex: 1;
-          padding: 12px;
+          padding: 12px 0;
           border: none;
-          background: none;
+          background: transparent;
           cursor: pointer;
-          font-size: 16px;
-          color: #666;
-          transition: all 0.2s;
+          font-size: 14px;
+          font-weight: 500;
+          color: #a1a1aa;
+          transition: all 0.2s ease;
+          position: relative;
+        }
+
+        .tab::after {
+          content: '';
+          position: absolute;
+          bottom: -1px;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: transparent;
+          transition: all 0.2s ease;
         }
 
         .tab:hover {
-          color: #333;
+          color: #52525b;
         }
 
         .tab.active {
-          color: #667eea;
-          border-bottom: 2px solid #667eea;
-          margin-bottom: -2px;
+          color: #000;
+        }
+
+        .tab.active::after {
+          background: #000;
         }
 
         h2 {
-          margin: 0 0 10px 0;
-          color: #333;
-          font-size: 1.3rem;
+          margin: 0 0 8px 0;
+          color: #18181b;
+          font-size: 1.1rem;
+          font-weight: 600;
         }
 
         .description {
-          color: #666;
+          color: #71717a;
           font-size: 14px;
-          margin-bottom: 20px;
+          margin-bottom: 28px;
+          line-height: 1.6;
         }
 
         .connect-button {
           width: 100%;
           padding: 14px 20px;
-          background: #f6851b;
-          color: white;
+          background: #000;
+          color: #fff;
           border: none;
-          border-radius: 8px;
-          font-size: 16px;
-          font-weight: 600;
+          border-radius: 10px;
+          font-size: 15px;
+          font-weight: 500;
           cursor: pointer;
-          transition: background 0.2s;
+          transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
         }
 
         .connect-button:hover:not(:disabled) {
-          background: #e2761b;
+          background: #27272a;
+          transform: translateY(-1px);
+        }
+
+        .connect-button:active:not(:disabled) {
+          transform: translateY(0);
         }
 
         .connect-button:disabled {
-          background: #ccc;
+          background: #d4d4d8;
           cursor: not-allowed;
         }
 
         .metamask-warning {
           text-align: center;
           padding: 20px;
-          background: #fff3cd;
-          border-radius: 8px;
+          background: #fef3c7;
+          border-radius: 10px;
           margin-bottom: 20px;
         }
 
+        .metamask-warning p {
+          margin: 0 0 8px 0;
+          font-weight: 500;
+          color: #92400e;
+          font-size: 14px;
+        }
+
         .install-link {
-          color: #667eea;
+          color: #000;
           font-weight: 600;
+          font-size: 14px;
           text-decoration: none;
         }
 
@@ -318,87 +380,137 @@ const Login = () => {
         }
 
         .form-group {
-          margin-bottom: 15px;
+          margin-bottom: 20px;
         }
 
         .form-group label {
           display: block;
-          margin-bottom: 5px;
-          color: #333;
+          margin-bottom: 8px;
+          color: #3f3f46;
           font-weight: 500;
+          font-size: 14px;
         }
 
         .form-group input {
           width: 100%;
-          padding: 12px;
-          border: 1px solid #ddd;
-          border-radius: 6px;
-          font-size: 14px;
+          padding: 12px 14px;
+          border: 1px solid #e4e4e7;
+          border-radius: 8px;
+          font-size: 15px;
           box-sizing: border-box;
+          transition: all 0.15s ease;
+          background: #fff;
+        }
+
+        .form-group input:hover {
+          border-color: #d4d4d8;
         }
 
         .form-group input:focus {
           outline: none;
-          border-color: #667eea;
+          border-color: #000;
+          box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group input::placeholder {
+          color: #a1a1aa;
         }
 
         .login-button {
           width: 100%;
           padding: 14px 20px;
-          background: #667eea;
-          color: white;
+          background: #000;
+          color: #fff;
           border: none;
-          border-radius: 8px;
-          font-size: 16px;
-          font-weight: 600;
+          border-radius: 10px;
+          font-size: 15px;
+          font-weight: 500;
           cursor: pointer;
-          transition: background 0.2s;
+          transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .login-button:hover:not(:disabled) {
-          background: #5a6fd6;
+          background: #27272a;
+          transform: translateY(-1px);
         }
 
         .login-button:disabled {
-          background: #ccc;
+          background: #d4d4d8;
           cursor: not-allowed;
         }
 
         .error-message {
-          margin-top: 15px;
-          padding: 12px;
-          background: #f8d7da;
-          color: #721c24;
-          border-radius: 6px;
+          margin-top: 20px;
+          padding: 12px 14px;
+          background: #fef2f2;
+          color: #dc2626;
+          border-radius: 8px;
           font-size: 14px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .error-message::before {
+          content: '!';
+          width: 18px;
+          height: 18px;
+          background: #dc2626;
+          color: #fff;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 11px;
+          font-weight: 700;
+          flex-shrink: 0;
+        }
+
+        .error-message p {
+          margin: 0;
         }
 
         .info-box {
-          margin-top: 25px;
-          padding: 15px;
-          background: #f8f9fa;
-          border-radius: 8px;
+          margin-top: 28px;
+          padding: 16px;
+          background: #fafafa;
+          border-radius: 10px;
           font-size: 13px;
+          border: 1px solid #f4f4f5;
         }
 
         .info-box h4 {
           margin: 0 0 10px 0;
-          color: #333;
+          color: #18181b;
+          font-size: 13px;
+          font-weight: 600;
         }
 
         .info-box ol {
           margin: 0;
-          padding-left: 20px;
-          color: #666;
+          padding-left: 18px;
+          color: #71717a;
         }
 
         .info-box li {
-          margin-bottom: 5px;
+          margin-bottom: 4px;
+          line-height: 1.5;
         }
 
         .info-box p {
           margin: 0;
-          color: #666;
+          color: #71717a;
+          line-height: 1.5;
+        }
+
+        @media (max-width: 480px) {
+          .login-container {
+            padding: 32px 24px;
+          }
+
+          h1 {
+            font-size: 1.5rem;
+          }
         }
       `}</style>
     </div>

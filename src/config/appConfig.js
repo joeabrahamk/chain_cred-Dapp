@@ -20,7 +20,7 @@ export const config = {
   
   // Chain ID for Ganache (usually 1337 or 5777)
   // Check your Ganache settings if transactions fail
-  chainId: 5777,
+  chainId: 1337,
 
   // IPFS Configuration
   // -------------------------------------------------

@@ -52,6 +52,9 @@ export const loginWithWallet = async (autoRegister = false) => {
     }
   }
 
+  // Clear logout flag since user is explicitly connecting
+  clearLogoutFlag();
+
   // Connect wallet
   const address = await connectWallet();
   
@@ -140,6 +143,31 @@ export const logout = () => {
     walletAddress: null,
     userId: null
   };
+  
+  // Set a flag to prevent auto-reconnect
+  if (typeof sessionStorage !== 'undefined') {
+    sessionStorage.setItem('userLoggedOut', 'true');
+    sessionStorage.removeItem('walletAuth');
+  }
+};
+
+/**
+ * Clear logout flag (called when user explicitly connects)
+ */
+export const clearLogoutFlag = () => {
+  if (typeof sessionStorage !== 'undefined') {
+    sessionStorage.removeItem('userLoggedOut');
+  }
+};
+
+/**
+ * Check if user explicitly logged out
+ */
+export const wasLoggedOut = () => {
+  if (typeof sessionStorage !== 'undefined') {
+    return sessionStorage.getItem('userLoggedOut') === 'true';
+  }
+  return false;
 };
 
 /**

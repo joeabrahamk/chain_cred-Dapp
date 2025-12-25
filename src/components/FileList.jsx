@@ -137,37 +137,68 @@ const FileList = ({ userId, isReadOnly = false, onRefresh }) => {
       <style>{`
         .file-list {
           background: #fff;
-          padding: 20px;
-          border-radius: 8px;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+          padding: 24px;
+          border-radius: 12px;
+          border: 1px solid #e4e4e7;
         }
 
         .file-list h3 {
-          margin-top: 0;
-          color: #333;
+          margin: 0 0 4px 0;
+          color: #18181b;
+          font-size: 1rem;
+          font-weight: 600;
         }
 
         .file-count {
-          color: #666;
-          font-size: 14px;
-          margin-bottom: 15px;
+          color: #71717a;
+          font-size: 13px;
+          margin-bottom: 16px;
         }
 
         .file-list.loading,
         .file-list.empty,
         .file-list.error {
           text-align: center;
-          padding: 40px 20px;
-          color: #666;
+          padding: 48px 24px;
+          color: #71717a;
+          font-size: 14px;
+        }
+
+        .file-list.loading::after {
+          content: '';
+          display: block;
+          width: 20px;
+          height: 20px;
+          margin: 12px auto 0;
+          border: 2px solid #e4e4e7;
+          border-top-color: #18181b;
+          border-radius: 50%;
+          animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+          to { transform: rotate(360deg); }
         }
 
         .file-list.error {
-          color: #dc3545;
+          color: #dc2626;
+        }
+
+        .file-list.error button {
+          margin-top: 12px;
+          padding: 10px 16px;
+          background: #18181b;
+          color: #fff;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: 500;
         }
 
         .files-table-container {
           overflow-x: auto;
-          margin-bottom: 15px;
+          margin-bottom: 16px;
         }
 
         .files-table {
@@ -178,23 +209,31 @@ const FileList = ({ userId, isReadOnly = false, onRefresh }) => {
 
         .files-table th,
         .files-table td {
-          padding: 12px;
+          padding: 12px 16px;
           text-align: left;
-          border-bottom: 1px solid #eee;
+          border-bottom: 1px solid #f4f4f5;
         }
 
         .files-table th {
-          background: #f8f9fa;
-          font-weight: 600;
-          color: #333;
+          background: #fafafa;
+          font-weight: 500;
+          color: #71717a;
+          font-size: 12px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+
+        .files-table tr:last-child td {
+          border-bottom: none;
         }
 
         .files-table tr:hover {
-          background: #f8f9fa;
+          background: #fafafa;
         }
 
         .file-name {
           font-weight: 500;
+          color: #18181b;
           max-width: 200px;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -202,14 +241,26 @@ const FileList = ({ userId, isReadOnly = false, onRefresh }) => {
         }
 
         .upload-date {
-          color: #666;
+          color: #71717a;
           white-space: nowrap;
+          font-size: 13px;
         }
 
         .cid {
-          font-family: monospace;
-          font-size: 12px;
-          color: #666;
+          font-family: 'SF Mono', 'Monaco', monospace;
+          font-size: 11px;
+          color: #71717a;
+          background: #f4f4f5;
+          padding: 4px 8px;
+          border-radius: 4px;
+        }
+
+        .cid span {
+          cursor: pointer;
+        }
+
+        .cid span:hover {
+          color: #18181b;
         }
 
         .actions {
@@ -217,21 +268,25 @@ const FileList = ({ userId, isReadOnly = false, onRefresh }) => {
         }
 
         .actions > * {
-          margin-right: 8px;
+          margin-right: 6px;
         }
 
         .refresh-button {
-          padding: 8px 16px;
-          background: #6c757d;
-          color: white;
-          border: none;
-          border-radius: 4px;
+          padding: 10px 16px;
+          background: #fff;
+          color: #52525b;
+          border: 1px solid #e4e4e7;
+          border-radius: 8px;
           cursor: pointer;
-          font-size: 14px;
+          font-size: 13px;
+          font-weight: 500;
+          transition: all 0.15s ease;
         }
 
         .refresh-button:hover {
-          background: #5a6268;
+          background: #fafafa;
+          border-color: #d4d4d8;
+          color: #18181b;
         }
       `}</style>
     </div>
