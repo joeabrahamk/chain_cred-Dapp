@@ -16,8 +16,9 @@ const ValuatorDashboard = () => {
   
   const [authState, setAuthState] = useState({
     isAuthenticated: false,
-    username: null,
-    name: null
+    email: null,
+    name: null,
+    companyName: null
   });
   const [loading, setLoading] = useState(true);
   
@@ -42,8 +43,8 @@ const ValuatorDashboard = () => {
   }, [navigate]);
 
   // Handle logout
-  const handleLogout = () => {
-    logoutValuator();
+  const handleLogout = async () => {
+    await logoutValuator();
     navigate('/');
   };
 
@@ -100,6 +101,9 @@ const ValuatorDashboard = () => {
           <div className="user-info">
             <span className="user-label">Logged in as:</span>
             <span className="username">{authState.name}</span>
+            {authState.companyName && (
+              <span className="company-name">({authState.companyName})</span>
+            )}
           </div>
           <button onClick={handleLogout} className="logout-button">
             Logout
@@ -265,6 +269,11 @@ const ValuatorDashboard = () => {
           padding: 6px 10px;
           border-radius: 6px;
           font-weight: 500;
+        }
+
+        .company-name {
+          opacity: 0.7;
+          font-size: 12px;
         }
 
         .logout-button {

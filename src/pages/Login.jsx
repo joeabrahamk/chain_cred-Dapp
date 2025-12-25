@@ -8,7 +8,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginWithWallet, checkAuthStatus, formatAddress, wasLoggedOut } from '../auth/walletAuth';
-import { loginAsValuator, checkValuatorAuthStatus } from '../auth/valuatorAuth';
+import { loginAsValuator, signupValuator, checkValuatorAuthStatus } from '../auth/valuatorAuth';
 import { isMetaMaskInstalled } from '../blockchain/web3';
 
 const Login = () => {
@@ -17,15 +17,28 @@ const Login = () => {
   // Tab state
   const [activeTab, setActiveTab] = useState('user'); // 'user' or 'valuator'
   
+  // Valuator sub-tab state
+  const [valuatorMode, setValuatorMode] = useState('login'); // 'login' or 'signup'
+  
   // User login state
   const [connecting, setConnecting] = useState(false);
   const [walletError, setWalletError] = useState('');
   
   // Valuator login state
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [valuatorError, setValuatorError] = useState('');
   const [loggingIn, setLoggingIn] = useState(false);
+  
+  // Valuator signup state
+  const [signupEmail, setSignupEmail] = useState('');
+  const [signupPassword, setSignupPassword] = useState('');
+  const [signupConfirmPassword, setSignupConfirmPassword] = useState('');
+  const [signupName, setSignupName] = useState('');
+  const [signupCompanyName, setSignupCompanyName] = useState('');
+  const [signingUp, setSigningUp] = useState(false);
+  const [signupError, setSignupError] = useState('');
+  const [signupSuccess, setSignupSuccess] = useState(false);
 
   // Check if already logged in
   useEffect(() => {
@@ -76,7 +89,7 @@ const Login = () => {
     setValuatorError('');
 
     try {
-      const auth = loginAsValuator(username, password);
+      const auth = await loginAsValuator(email, password);
       console.log('Valuator logged in:', auth.name);
       navigate('/valuator');
     } catch (error) {
@@ -84,6 +97,42 @@ const Login = () => {
       setValuatorError(error.message);
     } finally {
       setLoggingIn(false);
+    }
+  };
+
+  // Handle Valuator signup
+  const handleValuatorSignup = async (e) => {
+    e.preventDefault();
+    setSigningUp(true);
+    setSignupError('');
+    setSignupSuccess(false);
+
+    // Validate passwords match
+    if (signupPassword !== signupConfirmPassword) {
+      setSignupError('Passwords do not match.');
+      setSigningUp(false);
+      return;
+    }
+
+    try {
+      const auth = await signupValuator({
+        email: signupEmail,
+        password: signupPassword,
+        name: signupName,
+        companyName: signupCompanyName
+      });
+      console.log('Valuator signed up:', auth.name);
+      setSignupSuccess(true);
+      
+      // Navigate after short delay
+      setTimeout(() => {
+        navigate('/valuator');
+      }, 1500);
+    } catch (error) {
+      console.error('Valuator signup error:', error);
+      setSignupError(error.message);
+    } finally {
+      setSigningUp(false);
     }
   };
 
@@ -156,51 +205,178 @@ const Login = () => {
           </div>
         ) : (
           <div className="valuator-login">
-            <h2>Valuator Login</h2>
-            <p className="description">
-              Login with your valuator credentials to view user files.
-            </p>
-
-            <form onSubmit={handleValuatorLogin}>
-              <div className="form-group">
-                <label htmlFor="username">Username</label>
-                <input
-                  type="text"
-                  id="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="Enter username"
-                  disabled={loggingIn}
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter password"
-                  disabled={loggingIn}
-                  required
-                />
-              </div>
-
+            <div className="valuator-tabs">
               <button
-                type="submit"
-                disabled={loggingIn}
-                className="login-button"
+                className={`valuator-tab ${valuatorMode === 'login' ? 'active' : ''}`}
+                onClick={() => { setValuatorMode('login'); setSignupError(''); setValuatorError(''); }}
               >
-                {loggingIn ? 'Logging in...' : 'Login'}
+                Login
               </button>
-            </form>
+              <button
+                className={`valuator-tab ${valuatorMode === 'signup' ? 'active' : ''}`}
+                onClick={() => { setValuatorMode('signup'); setSignupError(''); setValuatorError(''); }}
+              >
+                Sign Up
+              </button>
+            </div>
 
-            {valuatorError && (
-              <div className="error-message">
-                <p>{valuatorError}</p>
-              </div>
+            {valuatorMode === 'login' ? (
+              <>
+                <p className="description">
+                  Login with your valuator credentials to view user files.
+                </p>
+
+                <form onSubmit={handleValuatorLogin}>
+                  <div className="form-group">
+                    <label htmlFor="email">Email</label>
+                    <input
+                      type="email"
+                      id="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your email"
+                      disabled={loggingIn}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="password">Password</label>
+                    <input
+                      type="password"
+                      id="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Enter password"
+                      disabled={loggingIn}
+                      required
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loggingIn}
+                    className="login-button"
+                  >
+                    {loggingIn ? 'Logging in...' : 'Login'}
+                  </button>
+                </form>
+
+                {valuatorError && (
+                  <div className="error-message">
+                    <p>{valuatorError}</p>
+                  </div>
+                )}
+
+                <p className="switch-mode">
+                  Don't have an account?{' '}
+                  <button onClick={() => setValuatorMode('signup')} className="link-button">
+                    Sign up
+                  </button>
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="description">
+                  Create a valuator account to access file viewing features.
+                </p>
+
+                {signupSuccess ? (
+                  <div className="success-message">
+                    <p>✓ Account created successfully! Redirecting...</p>
+                  </div>
+                ) : (
+                  <form onSubmit={handleValuatorSignup}>
+                    <div className="form-group">
+                      <label htmlFor="signupName">Full Name</label>
+                      <input
+                        type="text"
+                        id="signupName"
+                        value={signupName}
+                        onChange={(e) => setSignupName(e.target.value)}
+                        placeholder="Enter your full name"
+                        disabled={signingUp}
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="signupEmail">Email</label>
+                      <input
+                        type="email"
+                        id="signupEmail"
+                        value={signupEmail}
+                        onChange={(e) => setSignupEmail(e.target.value)}
+                        placeholder="Enter your email"
+                        disabled={signingUp}
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="signupCompanyName">Company Name</label>
+                      <input
+                        type="text"
+                        id="signupCompanyName"
+                        value={signupCompanyName}
+                        onChange={(e) => setSignupCompanyName(e.target.value)}
+                        placeholder="Enter your company name"
+                        disabled={signingUp}
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="signupPassword">Password</label>
+                      <input
+                        type="password"
+                        id="signupPassword"
+                        value={signupPassword}
+                        onChange={(e) => setSignupPassword(e.target.value)}
+                        placeholder="Min 6 characters"
+                        disabled={signingUp}
+                        required
+                        minLength={6}
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="signupConfirmPassword">Confirm Password</label>
+                      <input
+                        type="password"
+                        id="signupConfirmPassword"
+                        value={signupConfirmPassword}
+                        onChange={(e) => setSignupConfirmPassword(e.target.value)}
+                        placeholder="Confirm your password"
+                        disabled={signingUp}
+                        required
+                        minLength={6}
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={signingUp}
+                      className="login-button"
+                    >
+                      {signingUp ? 'Creating Account...' : 'Create Account'}
+                    </button>
+                  </form>
+                )}
+
+                {signupError && (
+                  <div className="error-message">
+                    <p>{signupError}</p>
+                  </div>
+                )}
+
+                <p className="switch-mode">
+                  Already have an account?{' '}
+                  <button onClick={() => setValuatorMode('login')} className="link-button">
+                    Login
+                  </button>
+                </p>
+              </>
             )}
 
             <div className="info-box">
@@ -501,6 +677,74 @@ const Login = () => {
           margin: 0;
           color: #71717a;
           line-height: 1.5;
+        }
+
+        .valuator-tabs {
+          display: flex;
+          background: #f4f4f5;
+          border-radius: 8px;
+          padding: 4px;
+          margin-bottom: 24px;
+        }
+
+        .valuator-tab {
+          flex: 1;
+          padding: 10px 16px;
+          border: none;
+          background: transparent;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: 500;
+          color: #71717a;
+          transition: all 0.2s ease;
+          border-radius: 6px;
+        }
+
+        .valuator-tab:hover {
+          color: #18181b;
+        }
+
+        .valuator-tab.active {
+          background: #fff;
+          color: #18181b;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .switch-mode {
+          text-align: center;
+          margin-top: 20px;
+          font-size: 14px;
+          color: #71717a;
+        }
+
+        .link-button {
+          background: none;
+          border: none;
+          color: #000;
+          font-weight: 600;
+          cursor: pointer;
+          padding: 0;
+          font-size: 14px;
+          text-decoration: underline;
+        }
+
+        .link-button:hover {
+          opacity: 0.7;
+        }
+
+        .success-message {
+          padding: 16px;
+          background: #f0fdf4;
+          color: #16a34a;
+          border-radius: 10px;
+          font-size: 15px;
+          font-weight: 500;
+          text-align: center;
+          border: 1px solid #bbf7d0;
+        }
+
+        .success-message p {
+          margin: 0;
         }
 
         @media (max-width: 480px) {
