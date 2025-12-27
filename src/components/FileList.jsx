@@ -88,32 +88,32 @@ const FileList = ({ userId, isReadOnly = false, onRefresh }) => {
 
   return (
     <div className="file-list">
-      <h3>{isReadOnly ? `Files for User: ${userId}` : 'My Files'}</h3>
-      <p className="file-count">{files.length} file(s)</p>
+      <div className="file-list-header">
+        <h3>{isReadOnly ? `Files for User: ${userId}` : 'My Files'}</h3>
+        <span className="file-count">{files.length} file(s)</span>
+      </div>
       
-      <div className="files-table-container">
+      <div className="files-table-wrapper">
         <table className="files-table">
           <thead>
             <tr>
-              <th>#</th>
-              <th>File Name</th>
-              <th>Upload Date</th>
-              <th>CID</th>
-              <th>Actions</th>
+              <th className="col-num">#</th>
+              <th className="col-name">File Name</th>
+              <th className="col-date">Upload Date</th>
+              <th className="col-cid">CID</th>
+              <th className="col-actions">Actions</th>
             </tr>
           </thead>
           <tbody>
             {files.map((file, index) => (
               <tr key={`${file.cid}-${index}`}>
-                <td>{index + 1}</td>
-                <td className="file-name">{file.name}</td>
-                <td className="upload-date">{file.uploadDate}</td>
-                <td className="cid">
-                  <span title={file.cid}>
-                    {file.cid.slice(0, 10)}...{file.cid.slice(-6)}
-                  </span>
+                <td className="col-num">{index + 1}</td>
+                <td className="col-name" title={file.name}>{file.name}</td>
+                <td className="col-date">{file.uploadDate}</td>
+                <td className="col-cid">
+                  <code title={file.cid}>{file.cid.slice(0, 8)}...{file.cid.slice(-4)}</code>
                 </td>
-                <td className="actions">
+                <td className="col-actions">
                   <DownloadFile cid={file.cid} fileName={file.name} />
                   {!isReadOnly && (
                     <DeleteFile
@@ -131,7 +131,7 @@ const FileList = ({ userId, isReadOnly = false, onRefresh }) => {
       </div>
 
       <button onClick={fetchFiles} className="refresh-button">
-        Refresh List
+        Refresh
       </button>
 
       <style>{`
@@ -139,20 +139,28 @@ const FileList = ({ userId, isReadOnly = false, onRefresh }) => {
           background: #fff;
           padding: 24px;
           border-radius: 12px;
-          border: 1px solid #e4e4e7;
+          border: 1px solid #e5e7eb;
+        }
+
+        .file-list-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 20px;
+          padding-bottom: 16px;
+          border-bottom: 1px solid #f3f4f6;
         }
 
         .file-list h3 {
-          margin: 0 0 4px 0;
-          color: #18181b;
+          margin: 0;
+          color: #111827;
           font-size: 1rem;
           font-weight: 600;
         }
 
         .file-count {
-          color: #71717a;
+          color: #6b7280;
           font-size: 13px;
-          margin-bottom: 16px;
         }
 
         .file-list.loading,
@@ -160,7 +168,7 @@ const FileList = ({ userId, isReadOnly = false, onRefresh }) => {
         .file-list.error {
           text-align: center;
           padding: 48px 24px;
-          color: #71717a;
+          color: #6b7280;
           font-size: 14px;
         }
 
@@ -170,10 +178,10 @@ const FileList = ({ userId, isReadOnly = false, onRefresh }) => {
           width: 20px;
           height: 20px;
           margin: 12px auto 0;
-          border: 2px solid #e4e4e7;
-          border-top-color: #18181b;
+          border: 2px solid #e5e7eb;
+          border-top-color: #111827;
           border-radius: 50%;
-          animation: spin 0.8s linear infinite;
+          animation: spin 0.7s linear infinite;
         }
 
         @keyframes spin {
@@ -186,17 +194,21 @@ const FileList = ({ userId, isReadOnly = false, onRefresh }) => {
 
         .file-list.error button {
           margin-top: 12px;
-          padding: 10px 16px;
-          background: #18181b;
+          padding: 10px 20px;
+          background: #111827;
           color: #fff;
           border: none;
-          border-radius: 8px;
+          border-radius: 6px;
           cursor: pointer;
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 500;
         }
 
-        .files-table-container {
+        .file-list.error button:hover {
+          background: #1f2937;
+        }
+
+        .files-table-wrapper {
           overflow-x: auto;
           margin-bottom: 16px;
         }
@@ -209,74 +221,76 @@ const FileList = ({ userId, isReadOnly = false, onRefresh }) => {
 
         .files-table th,
         .files-table td {
-          padding: 12px 16px;
+          padding: 12px 14px;
           text-align: left;
-          border-bottom: 1px solid #f4f4f5;
+          border-bottom: 1px solid #f3f4f6;
         }
 
         .files-table th {
-          background: #fafafa;
+          background: #f9fafb;
           font-weight: 500;
-          color: #71717a;
+          color: #6b7280;
           font-size: 12px;
           text-transform: uppercase;
           letter-spacing: 0.5px;
         }
 
-        .files-table tr:last-child td {
+        .files-table tbody tr:hover {
+          background: #f9fafb;
+        }
+
+        .files-table tbody tr:last-child td {
           border-bottom: none;
         }
 
-        .files-table tr:hover {
-          background: #fafafa;
+        .col-num {
+          width: 40px;
+          color: #9ca3af;
+          text-align: center;
         }
 
-        .file-name {
+        .col-name {
           font-weight: 500;
-          color: #18181b;
+          color: #111827;
           max-width: 200px;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
         }
 
-        .upload-date {
-          color: #71717a;
+        .col-date {
+          color: #6b7280;
           white-space: nowrap;
           font-size: 13px;
         }
 
-        .cid {
-          font-family: 'SF Mono', 'Monaco', monospace;
-          font-size: 11px;
-          color: #71717a;
-          background: #f4f4f5;
+        .col-cid code {
+          font-family: 'SF Mono', 'Consolas', monospace;
+          font-size: 12px;
+          color: #6b7280;
+          background: #f3f4f6;
           padding: 4px 8px;
           border-radius: 4px;
         }
 
-        .cid span {
-          cursor: pointer;
-        }
-
-        .cid span:hover {
-          color: #18181b;
-        }
-
-        .actions {
+        .col-actions {
           white-space: nowrap;
         }
 
-        .actions > * {
-          margin-right: 6px;
+        .col-actions > * {
+          margin-right: 8px;
+        }
+
+        .col-actions > *:last-child {
+          margin-right: 0;
         }
 
         .refresh-button {
           padding: 10px 16px;
           background: #fff;
-          color: #52525b;
-          border: 1px solid #e4e4e7;
-          border-radius: 8px;
+          color: #374151;
+          border: 1px solid #d1d5db;
+          border-radius: 6px;
           cursor: pointer;
           font-size: 13px;
           font-weight: 500;
@@ -284,9 +298,23 @@ const FileList = ({ userId, isReadOnly = false, onRefresh }) => {
         }
 
         .refresh-button:hover {
-          background: #fafafa;
-          border-color: #d4d4d8;
-          color: #18181b;
+          background: #f9fafb;
+          border-color: #9ca3af;
+        }
+
+        @media (max-width: 640px) {
+          .file-list {
+            padding: 16px;
+          }
+
+          .files-table th,
+          .files-table td {
+            padding: 10px 8px;
+          }
+
+          .col-cid {
+            display: none;
+          }
         }
       `}</style>
     </div>

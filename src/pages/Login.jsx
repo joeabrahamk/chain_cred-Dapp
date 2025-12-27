@@ -139,6 +139,9 @@ const Login = () => {
   return (
     <div className="login-page">
       <div className="login-container">
+        <div className="logo-container">
+          <img src="/icon.png" alt="CChain Logo" className="logo" />
+        </div>
         <h1>CChain</h1>
         <p className="subtitle">Decentralized File Storage</p>
 
@@ -392,132 +395,164 @@ const Login = () => {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: #fafafa;
+          background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
           padding: 24px;
           position: relative;
+          overflow: hidden;
         }
 
         .login-page::before {
           content: '';
           position: absolute;
+          top: -50%;
+          left: -50%;
+          width: 200%;
+          height: 200%;
+          background: radial-gradient(circle at 30% 20%, rgba(37, 99, 235, 0.15) 0%, transparent 50%),
+                      radial-gradient(circle at 70% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%);
+          z-index: 0;
+          animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+          0%, 100% { transform: translate(0, 0) rotate(0deg); }
+          50% { transform: translate(-2%, 2%) rotate(1deg); }
+        }
+
+        .login-page::after {
+          content: '';
+          position: absolute;
           top: 0;
           left: 0;
           right: 0;
-          height: 50%;
-          background: #000;
+          bottom: 0;
+          background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
           z-index: 0;
         }
 
         .login-container {
-          background: #fff;
+          background: rgba(255, 255, 255, 0.98);
+          backdrop-filter: blur(20px);
           padding: 48px 40px;
-          border-radius: 16px;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
-          max-width: 420px;
+          border-radius: 24px;
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4),
+                      0 0 0 1px rgba(255, 255, 255, 0.1);
+          max-width: 440px;
           width: 100%;
           position: relative;
           z-index: 10;
-          animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+          animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         @keyframes slideUp {
-          from { opacity: 0; transform: translateY(24px); }
-          to { opacity: 1; transform: translateY(0); }
+          from { opacity: 0; transform: translateY(30px) scale(0.98); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .logo-container {
+          text-align: center;
+          margin-bottom: 20px;
+        }
+
+        .logo {
+          width: 72px;
+          height: 72px;
+          object-fit: contain;
+          border-radius: 16px;
+          box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+          padding: 12px;
+          background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
         }
 
         h1 {
           text-align: center;
           margin: 0 0 4px 0;
-          font-size: 1.75rem;
-          font-weight: 700;
-          color: #000;
+          font-size: 2rem;
+          font-weight: 800;
+          background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
           letter-spacing: -0.5px;
         }
 
         .subtitle {
           text-align: center;
-          color: #71717a;
+          color: #64748b;
           margin: 0 0 32px 0;
           font-size: 14px;
-          font-weight: 400;
+          font-weight: 500;
+          letter-spacing: 0.5px;
         }
 
         .tabs {
           display: flex;
           margin-bottom: 32px;
-          border-bottom: 1px solid #e4e4e7;
+          background: #f1f5f9;
+          border-radius: 14px;
+          padding: 5px;
+          gap: 4px;
         }
 
         .tab {
           flex: 1;
-          padding: 12px 0;
+          padding: 12px 16px;
           border: none;
           background: transparent;
           cursor: pointer;
           font-size: 14px;
-          font-weight: 500;
-          color: #a1a1aa;
-          transition: all 0.2s ease;
+          font-weight: 600;
+          color: #64748b;
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+          border-radius: 10px;
           position: relative;
         }
 
-        .tab::after {
-          content: '';
-          position: absolute;
-          bottom: -1px;
-          left: 0;
-          right: 0;
-          height: 2px;
-          background: transparent;
-          transition: all 0.2s ease;
-        }
-
         .tab:hover {
-          color: #52525b;
+          color: #334155;
         }
 
         .tab.active {
-          color: #000;
-        }
-
-        .tab.active::after {
-          background: #000;
+          color: #fff;
+          background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+          box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
         }
 
         h2 {
           margin: 0 0 8px 0;
-          color: #18181b;
-          font-size: 1.1rem;
-          font-weight: 600;
+          color: #1e293b;
+          font-size: 1.15rem;
+          font-weight: 700;
         }
 
         .description {
-          color: #71717a;
+          color: #64748b;
           font-size: 14px;
           margin-bottom: 28px;
-          line-height: 1.6;
+          line-height: 1.7;
         }
 
         .connect-button {
           width: 100%;
-          padding: 14px 20px;
-          background: #000;
+          padding: 16px 24px;
+          background: linear-gradient(135deg, #f6851b 0%, #e2761b 100%);
           color: #fff;
           border: none;
-          border-radius: 10px;
+          border-radius: 14px;
           font-size: 15px;
-          font-weight: 500;
+          font-weight: 600;
           cursor: pointer;
-          transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 10px;
+          gap: 12px;
+          box-shadow: 0 4px 14px rgba(246, 133, 27, 0.35);
         }
 
         .connect-button:hover:not(:disabled) {
-          background: #27272a;
-          transform: translateY(-1px);
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px rgba(246, 133, 27, 0.45);
         }
 
         .connect-button:active:not(:disabled) {
@@ -525,34 +560,44 @@ const Login = () => {
         }
 
         .connect-button:disabled {
-          background: #d4d4d8;
+          background: #cbd5e1;
+          box-shadow: none;
           cursor: not-allowed;
         }
 
         .metamask-warning {
           text-align: center;
-          padding: 20px;
-          background: #fef3c7;
-          border-radius: 10px;
+          padding: 20px 24px;
+          background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+          border-radius: 14px;
           margin-bottom: 20px;
+          border: 1px solid #fcd34d;
         }
 
         .metamask-warning p {
-          margin: 0 0 8px 0;
-          font-weight: 500;
+          margin: 0 0 12px 0;
+          font-weight: 600;
           color: #92400e;
           font-size: 14px;
         }
 
         .install-link {
-          color: #000;
-          font-weight: 600;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          color: #78350f;
+          font-weight: 700;
           font-size: 14px;
           text-decoration: none;
+          padding: 8px 16px;
+          background: rgba(255, 255, 255, 0.7);
+          border-radius: 8px;
+          transition: all 0.2s ease;
         }
 
         .install-link:hover {
-          text-decoration: underline;
+          background: #fff;
+          transform: translateX(2px);
         }
 
         .form-group {
@@ -562,185 +607,225 @@ const Login = () => {
         .form-group label {
           display: block;
           margin-bottom: 8px;
-          color: #3f3f46;
-          font-weight: 500;
-          font-size: 14px;
+          color: #374151;
+          font-weight: 600;
+          font-size: 13px;
+          letter-spacing: 0.3px;
         }
 
         .form-group input {
           width: 100%;
-          padding: 12px 14px;
-          border: 1px solid #e4e4e7;
-          border-radius: 8px;
+          padding: 14px 16px;
+          border: 2px solid #e2e8f0;
+          border-radius: 12px;
           font-size: 15px;
           box-sizing: border-box;
-          transition: all 0.15s ease;
-          background: #fff;
+          transition: all 0.2s ease;
+          background: #f8fafc;
         }
 
         .form-group input:hover {
-          border-color: #d4d4d8;
+          border-color: #cbd5e1;
+          background: #fff;
         }
 
         .form-group input:focus {
           outline: none;
-          border-color: #000;
-          box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+          border-color: #2563eb;
+          background: #fff;
+          box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
         }
 
         .form-group input::placeholder {
-          color: #a1a1aa;
+          color: #94a3b8;
         }
 
         .login-button {
           width: 100%;
-          padding: 14px 20px;
-          background: #000;
+          padding: 16px 24px;
+          background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
           color: #fff;
           border: none;
-          border-radius: 10px;
+          border-radius: 14px;
           font-size: 15px;
-          font-weight: 500;
+          font-weight: 600;
           cursor: pointer;
-          transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+          box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
         }
 
         .login-button:hover:not(:disabled) {
-          background: #27272a;
-          transform: translateY(-1px);
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px rgba(37, 99, 235, 0.45);
         }
 
         .login-button:disabled {
-          background: #d4d4d8;
+          background: #cbd5e1;
+          box-shadow: none;
           cursor: not-allowed;
         }
 
         .error-message {
           margin-top: 20px;
-          padding: 12px 14px;
-          background: #fef2f2;
+          padding: 14px 16px;
+          background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
           color: #dc2626;
-          border-radius: 8px;
+          border-radius: 12px;
           font-size: 14px;
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 12px;
+          border: 1px solid #fecaca;
         }
 
         .error-message::before {
           content: '!';
-          width: 18px;
-          height: 18px;
-          background: #dc2626;
+          width: 22px;
+          height: 22px;
+          background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
           color: #fff;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 11px;
-          font-weight: 700;
+          font-size: 12px;
+          font-weight: 800;
           flex-shrink: 0;
         }
 
         .error-message p {
           margin: 0;
+          font-weight: 500;
         }
 
         .info-box {
           margin-top: 28px;
-          padding: 16px;
-          background: #fafafa;
-          border-radius: 10px;
+          padding: 20px;
+          background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+          border-radius: 14px;
           font-size: 13px;
-          border: 1px solid #f4f4f5;
+          border: 1px solid #e2e8f0;
         }
 
         .info-box h4 {
-          margin: 0 0 10px 0;
-          color: #18181b;
+          margin: 0 0 12px 0;
+          color: #1e293b;
           font-size: 13px;
-          font-weight: 600;
+          font-weight: 700;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .info-box h4::before {
+          content: '💡';
         }
 
         .info-box ol {
           margin: 0;
-          padding-left: 18px;
-          color: #71717a;
+          padding-left: 20px;
+          color: #64748b;
         }
 
         .info-box li {
-          margin-bottom: 4px;
-          line-height: 1.5;
+          margin-bottom: 6px;
+          line-height: 1.6;
+        }
+
+        .info-box li::marker {
+          color: #2563eb;
+          font-weight: 700;
         }
 
         .info-box p {
           margin: 0;
-          color: #71717a;
-          line-height: 1.5;
+          color: #64748b;
+          line-height: 1.6;
         }
 
         .valuator-tabs {
           display: flex;
-          background: #f4f4f5;
-          border-radius: 8px;
+          background: #f1f5f9;
+          border-radius: 12px;
           padding: 4px;
           margin-bottom: 24px;
+          gap: 4px;
         }
 
         .valuator-tab {
           flex: 1;
-          padding: 10px 16px;
+          padding: 12px 16px;
           border: none;
           background: transparent;
           cursor: pointer;
           font-size: 14px;
-          font-weight: 500;
-          color: #71717a;
-          transition: all 0.2s ease;
-          border-radius: 6px;
+          font-weight: 600;
+          color: #64748b;
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+          border-radius: 9px;
         }
 
         .valuator-tab:hover {
-          color: #18181b;
+          color: #334155;
         }
 
         .valuator-tab.active {
           background: #fff;
-          color: #18181b;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          color: #1e293b;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
         .switch-mode {
           text-align: center;
-          margin-top: 20px;
+          margin-top: 24px;
           font-size: 14px;
-          color: #71717a;
+          color: #64748b;
         }
 
         .link-button {
           background: none;
           border: none;
-          color: #000;
-          font-weight: 600;
+          color: #2563eb;
+          font-weight: 700;
           cursor: pointer;
           padding: 0;
           font-size: 14px;
-          text-decoration: underline;
+          text-decoration: none;
+          transition: all 0.2s ease;
         }
 
         .link-button:hover {
-          opacity: 0.7;
+          color: #1d4ed8;
+          text-decoration: underline;
         }
 
         .success-message {
-          padding: 16px;
-          background: #f0fdf4;
+          padding: 20px;
+          background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
           color: #16a34a;
-          border-radius: 10px;
+          border-radius: 14px;
           font-size: 15px;
-          font-weight: 500;
+          font-weight: 600;
           text-align: center;
-          border: 1px solid #bbf7d0;
+          border: 1px solid #86efac;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+        }
+
+        .success-message::before {
+          content: '✓';
+          width: 24px;
+          height: 24px;
+          background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
+          color: #fff;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          font-weight: 800;
         }
 
         .success-message p {
@@ -750,10 +835,16 @@ const Login = () => {
         @media (max-width: 480px) {
           .login-container {
             padding: 32px 24px;
+            border-radius: 20px;
           }
 
           h1 {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
+          }
+
+          .logo {
+            width: 60px;
+            height: 60px;
           }
         }
       `}</style>

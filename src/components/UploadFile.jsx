@@ -138,92 +138,143 @@ const UploadFile = ({ userId, onUploadComplete }) => {
       <style>{`
         .upload-file {
           background: #fff;
-          padding: 24px;
-          border-radius: 12px;
-          margin-bottom: 20px;
-          border: 1px solid #e4e4e7;
+          padding: 32px;
+          border-radius: 20px;
+          margin-bottom: 24px;
+          border: 1px solid #e2e8f0;
+          box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
         }
 
         .upload-file h3 {
-          margin: 0 0 16px 0;
-          color: #18181b;
-          font-size: 1rem;
-          font-weight: 600;
+          margin: 0 0 20px 0;
+          color: #1e293b;
+          font-size: 1.15rem;
+          font-weight: 700;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .upload-file h3::before {
+          content: '📤';
+          font-size: 1.1rem;
         }
 
         .upload-area {
-          margin-bottom: 16px;
+          margin-bottom: 20px;
         }
 
         .file-input {
           width: 100%;
-          padding: 20px;
-          border: 1px dashed #d4d4d8;
-          border-radius: 8px;
+          padding: 28px 20px;
+          border: 2px dashed #cbd5e1;
+          border-radius: 14px;
           cursor: pointer;
-          background: #fafafa;
-          transition: all 0.15s ease;
+          background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
           font-size: 14px;
-          color: #52525b;
+          color: #64748b;
         }
 
         .file-input:hover {
-          border-color: #a1a1aa;
-          background: #f4f4f5;
+          border-color: #2563eb;
+          background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
         }
 
         .file-input:focus {
           outline: none;
-          border-color: #18181b;
+          border-color: #2563eb;
+          box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
         }
 
         .selected-file-info {
-          margin-top: 12px;
-          padding: 14px;
-          background: #f4f4f5;
-          border-radius: 8px;
+          margin-top: 16px;
+          padding: 18px 20px;
+          background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+          border-radius: 12px;
+          border: 1px solid #e2e8f0;
         }
 
         .selected-file-info p {
-          margin: 4px 0;
+          margin: 6px 0;
           font-size: 13px;
-          color: #52525b;
+          color: #64748b;
+          display: flex;
+          gap: 8px;
         }
 
         .selected-file-info strong {
-          color: #18181b;
+          color: #334155;
+          font-weight: 600;
+          min-width: 60px;
         }
 
         .upload-button {
           width: 100%;
-          padding: 14px 20px;
-          background: #18181b;
+          padding: 16px 24px;
+          background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
           color: #fff;
           border: none;
-          border-radius: 8px;
-          font-size: 14px;
-          font-weight: 500;
+          border-radius: 14px;
+          font-size: 15px;
+          font-weight: 600;
           cursor: pointer;
-          transition: all 0.15s ease;
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+          box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+        }
+
+        .upload-button::before {
+          content: '⬆';
+          font-size: 14px;
         }
 
         .upload-button:hover:not(:disabled) {
-          background: #27272a;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px rgba(37, 99, 235, 0.45);
         }
 
         .upload-button:disabled {
-          background: #d4d4d8;
+          background: #cbd5e1;
+          box-shadow: none;
           cursor: not-allowed;
         }
 
+        .upload-button:disabled::before {
+          content: '';
+        }
+
         .upload-progress {
-          margin-top: 12px;
-          padding: 12px 14px;
-          background: #f0fdf4;
+          margin-top: 16px;
+          padding: 16px 18px;
+          background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
           color: #166534;
-          border-radius: 8px;
+          border-radius: 12px;
           text-align: center;
           font-size: 14px;
+          font-weight: 500;
+          border: 1px solid #86efac;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+        }
+
+        .upload-progress::before {
+          content: '';
+          width: 18px;
+          height: 18px;
+          border: 2px solid #86efac;
+          border-top-color: #16a34a;
+          border-radius: 50%;
+          animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+          to { transform: rotate(360deg); }
         }
 
         .upload-progress p {
@@ -231,16 +282,36 @@ const UploadFile = ({ userId, onUploadComplete }) => {
         }
 
         .error-message {
-          margin-top: 12px;
-          padding: 12px 14px;
-          background: #fef2f2;
+          margin-top: 16px;
+          padding: 14px 16px;
+          background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
           color: #dc2626;
-          border-radius: 8px;
+          border-radius: 12px;
           font-size: 14px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          border: 1px solid #fecaca;
+        }
+
+        .error-message::before {
+          content: '!';
+          width: 22px;
+          height: 22px;
+          background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+          color: #fff;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 12px;
+          font-weight: 800;
+          flex-shrink: 0;
         }
 
         .error-message p {
           margin: 0;
+          font-weight: 500;
         }
       `}</style>
     </div>

@@ -67,29 +67,27 @@ const DeleteFile = ({ userId, fileIndex, fileName, onDeleteComplete }) => {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            flex-wrap: wrap;
-            padding: 8px 12px;
-            background: #fafafa;
-            border-radius: 8px;
-            border: 1px solid #e4e4e7;
+            padding: 6px 10px;
+            background: #f9fafb;
+            border-radius: 4px;
+            border: 1px solid #e5e7eb;
           }
 
           .confirm-text {
             font-size: 12px;
-            color: #52525b;
+            color: #374151;
             font-weight: 500;
           }
 
           .confirm-yes {
-            padding: 5px 10px;
+            padding: 4px 10px;
             background: #dc2626;
             color: #fff;
             border: none;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
             font-size: 12px;
             font-weight: 500;
-            transition: all 0.15s ease;
           }
 
           .confirm-yes:hover:not(:disabled) {
@@ -97,19 +95,18 @@ const DeleteFile = ({ userId, fileIndex, fileName, onDeleteComplete }) => {
           }
 
           .confirm-no {
-            padding: 5px 10px;
+            padding: 4px 10px;
             background: #fff;
-            color: #52525b;
-            border: 1px solid #e4e4e7;
-            border-radius: 6px;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
             cursor: pointer;
             font-size: 12px;
             font-weight: 500;
-            transition: all 0.15s ease;
           }
 
           .confirm-no:hover:not(:disabled) {
-            background: #f4f4f5;
+            background: #f3f4f6;
           }
 
           .delete-error {
@@ -135,9 +132,9 @@ const DeleteFile = ({ userId, fileIndex, fileName, onDeleteComplete }) => {
         .delete-button {
           padding: 6px 12px;
           background: #fff;
-          color: #71717a;
-          border: 1px solid #e4e4e7;
-          border-radius: 6px;
+          color: #6b7280;
+          border: 1px solid #d1d5db;
+          border-radius: 4px;
           cursor: pointer;
           font-size: 12px;
           font-weight: 500;
@@ -146,12 +143,8 @@ const DeleteFile = ({ userId, fileIndex, fileName, onDeleteComplete }) => {
 
         .delete-button:hover {
           background: #fef2f2;
-          border-color: #fecaca;
+          border-color: #fca5a5;
           color: #dc2626;
-        }
-
-        .delete-button:active {
-          background: #fee2e2;
         }
       `}</style>
     </>

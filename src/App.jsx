@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './pages/Login';
 import UserDashboard from './pages/UserDashboard';
 import ValuatorDashboard from './pages/ValuatorDashboard';
+import SkillsDashboard from './pages/SkillsDashboard';
 
 function App() {
   return (
@@ -19,6 +20,9 @@ function App() {
         
         {/* User dashboard - for general users */}
         <Route path="/dashboard" element={<UserDashboard />} />
+        
+        {/* Skills dashboard - tech stack proficiency */}
+        <Route path="/skills" element={<SkillsDashboard />} />
         
         {/* Valuator dashboard - for valuators */}
         <Route path="/valuator" element={<ValuatorDashboard />} />

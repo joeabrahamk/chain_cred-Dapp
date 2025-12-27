@@ -42,26 +42,22 @@ const DownloadFile = ({ cid, fileName }) => {
       <style>{`
         .download-button {
           padding: 6px 12px;
-          background: #18181b;
+          background: #111827;
           color: #fff;
           border: none;
-          border-radius: 6px;
+          border-radius: 4px;
           cursor: pointer;
           font-size: 12px;
           font-weight: 500;
-          transition: all 0.15s ease;
+          transition: background 0.15s ease;
         }
 
         .download-button:hover:not(:disabled) {
-          background: #27272a;
-        }
-
-        .download-button:active:not(:disabled) {
-          background: #18181b;
+          background: #1f2937;
         }
 
         .download-button:disabled {
-          background: #d4d4d8;
+          background: #d1d5db;
           cursor: wait;
         }
       `}</style>
