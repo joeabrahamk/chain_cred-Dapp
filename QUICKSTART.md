@@ -1,6 +1,6 @@
-# CChain - Quick Start Guide
+# Chain-Cred - Quick Start Guide
 
-This is a quick reference for getting CChain up and running.
+This is a quick reference for getting Chain-Cred up and running.
 
 ## Prerequisites
 
@@ -14,7 +14,7 @@ This is a quick reference for getting CChain up and running.
 ### 1. Install Dependencies
 
 ```bash
-cd cchain
+cd Chain-Cred
 npm install
 ```
 

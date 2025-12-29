@@ -15,6 +15,34 @@ import config from '../config/appConfig';
 // IPFS client instance
 let ipfsClient = null;
 
+// Fallback public IPFS gateways (tried in order if primary fails)
+const FALLBACK_GATEWAYS = [
+  'https://ipfs.io/ipfs',
+  'https://gateway.pinata.cloud/ipfs',
+  'https://cloudflare-ipfs.com/ipfs',
+  'https://dweb.link/ipfs',
+  'https://w3s.link/ipfs',
+];
+
+// Timeout for gateway requests (ms)
+const GATEWAY_TIMEOUT = 15000;
+
+/**
+ * Fetch with timeout helper
+ */
+const fetchWithTimeout = async (url, timeout = GATEWAY_TIMEOUT) => {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+  try {
+    const response = await fetch(url, { signal: controller.signal });
+    clearTimeout(id);
+    return response;
+  } catch (error) {
+    clearTimeout(id);
+    throw error;
+  }
+};
+
 /**
  * Check if we should use demo mode (no real IPFS)
  */
@@ -154,44 +182,54 @@ export const getGatewayUrl = (cid) => {
 };
 
 /**
- * Download a file from IPFS using the gateway
+ * Download a file from IPFS using multiple gateway fallbacks
  * @param {string} cid - The Content Identifier
  * @param {string} fileName - The original file name for download
  * @returns {Promise<void>}
  */
 export const downloadFromIpfs = async (cid, fileName) => {
-  try {
-    const url = getGatewayUrl(cid);
+  const safeCid = encodeURIComponent(String(cid || ''));
+  const fileParam = fileName ? `?filename=${encodeURIComponent(String(fileName))}` : '';
+  
+  // Build list of gateways to try (configured + fallbacks)
+  const primaryGateway = (config.ipfsGateway || '').replace(/\/+$/, '').replace(/\/ipfs\/?$/, '') + '/ipfs';
+  const gateways = [primaryGateway, ...FALLBACK_GATEWAYS.filter(g => g !== primaryGateway)];
+  
+  let lastError = null;
+  
+  for (const gateway of gateways) {
+    const url = `${gateway}/${safeCid}${fileParam}`;
+    console.log(`Trying IPFS gateway: ${gateway}`);
     
-    // Fetch the file
-    const response = await fetch(url);
-    
-    if (!response.ok) {
-      throw new Error(`Failed to fetch file: ${response.statusText}`);
+    try {
+      const response = await fetchWithTimeout(url);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      // Success - download the file
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = fileName || '';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(downloadUrl);
+      
+      console.log('File downloaded:', fileName);
+      return; // Success, exit
+    } catch (error) {
+      console.warn(`Gateway ${gateway} failed:`, error.message);
+      lastError = error;
+      // Continue to next gateway
     }
-    
-    // Get the blob
-    const blob = await response.blob();
-    
-    // Create download link
-    const downloadUrl = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = downloadUrl;
-    link.download = fileName;
-    
-    // Trigger download
-    document.body.appendChild(link);
-    link.click();
-    
-    // Cleanup
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(downloadUrl);
-    
-    console.log('File downloaded:', fileName);
-  } catch (error) {
-    console.error('Error downloading from IPFS:', error);
-    throw new Error(`Failed to download file: ${error.message}`);
   }
+  
+  // All gateways failed
+  throw new Error(`Failed to download from all gateways. Last error: ${lastError?.message || 'Unknown'}`);
 };
 
 /**

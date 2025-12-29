@@ -1,7 +1,7 @@
 /**
  * Application Configuration
  * 
- * This file contains all the configuration settings for CChain.
+ * This file contains all the configuration settings for Chain-Cred.
  * Update these values after deploying your smart contract.
  */
 

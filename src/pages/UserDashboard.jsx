@@ -111,8 +111,8 @@ const UserDashboard = () => {
     <div className="dashboard">
       <header className="dashboard-header">
         <div className="header-left">
-          <img src="/icon.png" alt="CChain" className="header-logo" />
-          <h1>CChain</h1>
+          <img src="/icon.png" alt="Chain-Cred" className="header-logo" />
+          <h1>Chain-Cred</h1>
           <span className="user-type">General User</span>
         </div>
         <div className="header-right">

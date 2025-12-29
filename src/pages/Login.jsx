@@ -140,9 +140,9 @@ const Login = () => {
     <div className="login-page">
       <div className="login-container">
         <div className="logo-container">
-          <img src="/icon.png" alt="CChain Logo" className="logo" />
+          <img src="/icon.png" alt="Chain-Cred Logo" className="logo" />
         </div>
-        <h1>CChain</h1>
+        <h1>Chain-Cred</h1>
         <p className="subtitle">Decentralized File Storage</p>
 
         <div className="tabs">

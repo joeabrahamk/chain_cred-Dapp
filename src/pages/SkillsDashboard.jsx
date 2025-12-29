@@ -119,7 +119,7 @@ const SkillsDashboard = () => {
     <div className="skills-dashboard">
       <header className="dashboard-header">
         <div className="header-left">
-          <img src="/icon.png" alt="CChain" className="header-logo" />
+          <img src="/icon.png" alt="Chain-Cred" className="header-logo" />
           <h1>Skills Dashboard</h1>
         </div>
         <div className="header-right">
