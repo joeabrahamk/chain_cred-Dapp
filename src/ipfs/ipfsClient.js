@@ -39,8 +39,42 @@ const fetchWithTimeout = async (url, timeout = GATEWAY_TIMEOUT) => {
     return response;
   } catch (error) {
     clearTimeout(id);
+    // Make aborts easier to understand
+    if (error.name === 'AbortError') {
+      throw new Error(`Request timed out after ${timeout}ms`);
+    }
     throw error;
   }
+};
+
+/**
+ * Normalize and build the ordered gateway list
+ */
+const buildGatewayList = () => {
+  const sanitize = (gateway) => gateway.replace(/\/+$/, '').replace(/\/ipfs\/?$/, '') + '/ipfs';
+
+  const gateways = new Set();
+
+  // Primary from config
+  if (config.ipfsGateway) {
+    gateways.add(sanitize(config.ipfsGateway));
+  }
+
+  // If using a local IPFS API, prefer the local gateway first
+  try {
+    const apiUrl = new URL(config.ipfsApiUrl || '');
+    const host = apiUrl.hostname;
+    if (host === 'localhost' || host === '127.0.0.1') {
+      gateways.add('http://127.0.0.1:8080/ipfs');
+    }
+  } catch (_) {
+    // Ignore URL parse issues and proceed with defaults
+  }
+
+  // Public fallbacks
+  FALLBACK_GATEWAYS.forEach((g) => gateways.add(sanitize(g)));
+
+  return Array.from(gateways);
 };
 
 /**
@@ -191,9 +225,8 @@ export const downloadFromIpfs = async (cid, fileName) => {
   const safeCid = encodeURIComponent(String(cid || ''));
   const fileParam = fileName ? `?filename=${encodeURIComponent(String(fileName))}` : '';
   
-  // Build list of gateways to try (configured + fallbacks)
-  const primaryGateway = (config.ipfsGateway || '').replace(/\/+$/, '').replace(/\/ipfs\/?$/, '') + '/ipfs';
-  const gateways = [primaryGateway, ...FALLBACK_GATEWAYS.filter(g => g !== primaryGateway)];
+  // Build list of gateways to try (configured + fallbacks + local if available)
+  const gateways = buildGatewayList();
   
   let lastError = null;
   
